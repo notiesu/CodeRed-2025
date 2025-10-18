@@ -137,13 +137,11 @@ async function getMathpixUsage() {
     }
 }
 
-// Export functions for use in other files
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = {
-        processWithMathpix,
-        processMathpixResponse,
-        validateMathpixConfig,
-        testMathpixConnection,
-        getMathpixUsage
-    };
-}
+// Export functions for use in other files (ES module syntax)
+export {
+    processWithMathpix,
+    processMathpixResponse,
+    validateMathpixConfig,
+    testMathpixConnection,
+    getMathpixUsage
+};

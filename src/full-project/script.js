@@ -11,6 +11,23 @@ import {
     processMultipleFiles,
     downloadFile
 } from './utils/file-handler.js';
+import {
+    processWithMathpix,
+    processMathpixResponse,
+    validateMathpixConfig,
+    testMathpixConnection,
+    getMathpixUsage
+} from './api/mathpix/mathpix.js';
+import { createUploadArea } from './components/upload-area.js';
+import { createProcessingIndicator } from './components/processing-indicator.js';
+import { createAudioControls } from './components/audio-controls.js';
+import { createAudioManager } from './utils/audio-manager.js';
+import { convertLatexToSpeech } from './utils/latex-parser.js';
+import {
+    validateElevenLabsConfig,
+    createMathAudio,
+    testElevenLabsConnection
+} from './api/elevenlabs/elevenlabs.js';
 // 🎯 MathsVoice - Full Application
 // This file coordinates all components and handles the main application logic
 
@@ -174,19 +191,7 @@ function handleAudioDownload() {
 }
 
 // 📊 Process with Mathpix API
-async function processWithMathpix(base64Image) {
-    // if (DEMO_MODE) {
-    //     console.log('🎭 Using demo mode - no real API call');
-    //     return DEMO_CONTENT;
-    // }
-    try {
-        validateMathpixConfig();
-        return await processWithMathpix(base64Image);
-    } catch (error) {
-        console.error('Mathpix processing error:', error);
-        throw new Error(`Failed to process image: ${error.message}`);
-    }
-}
+// Imported from mathpix.js
 
 // 🗣️ Generate speech text
 function generateSpeechText(mathpixResult) {
