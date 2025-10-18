@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify, send_file, Blueprint
 from dotenv import load_dotenv
-from elevenlabs.client import ElevenLabs
+from elevenlabs import ElevenLabs
 from elevenlabs import save
 import os
 

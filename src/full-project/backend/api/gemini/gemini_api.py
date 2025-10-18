@@ -10,7 +10,9 @@ gemini_bp = Blueprint('gemini_api', __name__)
 
 SYSTEM_PROMPT = "\
 I am giving you a text file that contains mathematical content extracted from images or PDFs.\
-Please summarize this and prepare it as a script (maximum of two minutes for someone to speak) to teach a human student. Here is the content:\
+Please summarize this and prepare it for a text to speech emulator to teach a human student. \
+Please keep it about 2 minutues length. Please only the words of the lecture and make it understandable\
+Here is the content:\
 "
 def generate_content(content):
 

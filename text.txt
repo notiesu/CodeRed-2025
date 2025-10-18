@@ -1,0 +1,13 @@
+Hello everyone! Today, we're diving into the fascinating world of functions, a core concept in mathematics that helps us describe relationships. Most of this might be a review, but it's crucial for our journey ahead.  
+
+So, what exactly is a function? Imagine you have two sets of items. A function is a special kind of relationship between these sets. Specifically, it's a rule that assigns *each* element from the first set, which we call the **input**, to *exactly one* element in the second set, known as the **output**. Think of it like a machine: you put something in, and the machine gives you one specific thing back every time.
+
+We use functions to describe all sorts of real-world scenarios. For instance, the area of a square is a function of its side length. Give me the side length, and I can tell you the area. The cost of mailing a package is a function of its weight – heavier package, different cost.
+
+Let's solidify some terms. The entire collection of all possible *inputs* for a function is called its **domain**. And the entire collection of all possible *outputs* that the function can produce is called its **range**.
+
+Consider a simple function: squaring a number. If our input is 3, the output is 9 because 3 squared is 9. In this case, if our domain is all real numbers, what's our range? Since squaring any real number always results in a non-negative number, the range of this function is all non-negative real numbers. We can't get a negative number by squaring a real number.
+
+Finally, let's talk about notation. We often use `x` for the input, calling it the *independent variable*, and `y` for the output, which is the *dependent variable* because it depends on `x`. We write this as `y = f(x)`, which we read as 'y equals f of x'. So, for our squaring function, we'd write `f(x) = x squared`.
+
+By understanding these basics, you'll be able to use functional notation, determine domains and ranges, and eventually even graph functions and find their key features. This foundational knowledge is key to exploring more complex mathematical ideas.
