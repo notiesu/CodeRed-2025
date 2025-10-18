@@ -14,3 +14,5 @@ notes.md
 .env
 secrets.js
 /test_inputs
+*.pyc
+__pycache__/
