@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MathsVoice - Accessible STEM Learning</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="description" content="Making STEM education accessible through AI-powered voice narration">
+    <meta name="keywords" content="accessibility, STEM, education, math, science, voice, narration, visual impairment">
+    <meta name="author" content="MathsVoice Team">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="title">MathsVoice</h1>
+            <p class="subtitle">Making STEM accessible through AI-powered voice narration</p>
+        </header>
+
+        <main class="main-content">
+            <!-- Upload Section -->
+            <div class="upload-section">
+                <div id="uploadContainer"></div>
+            </div>
+
+            <!-- Processing Section -->
+            <div class="processing-section" id="processingSection" style="display: none;">
+                <div id="processingContainer"></div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="results-section" id="resultsSection" style="display: none;">
+                <div id="audioControlsContainer"></div>
+                
+                <div class="content-display">
+                    <h3>Processed Content</h3>
+                    <div id="contentOutput" class="content-text"></div>
+                </div>
+
+                <div class="actions">
+                    <button id="newDocumentBtn" class="btn btn-outline">Process New Document</button>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>Built for accessibility in STEM education</p>
+        </footer>
+    </div>
+
+    <!-- Load configuration and utilities -->
+    <script src="config.js"></script>
+    <script src="utils/latex-parser.js"></script>
+    <script src="utils/file-handler.js"></script>
+    <script src="utils/audio-manager.js"></script>
+    
+    <!-- Load API modules -->
+    <script src="api/mathpix.js"></script>
+    <script src="api/elevenlabs.js"></script>
+    
+    <!-- Load components -->
+    <script src="components/upload-area.js"></script>
+    <script src="components/processing-indicator.js"></script>
+    <script src="components/audio-controls.js"></script>
+    
+    <!-- Load main application -->
+    <script src="script.js"></script>
+</body>
+</html>

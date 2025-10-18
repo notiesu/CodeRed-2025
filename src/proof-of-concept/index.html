@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MathsVoice - Proof of Concept</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="title">MathsVoice</h1>
+            <p class="subtitle">Making STEM accessible through AI-powered voice narration</p>
+            <div class="demo-badge">🎭 PROOF OF CONCEPT</div>
+        </header>
+
+        <main class="main-content">
+            <div class="upload-section">
+                <div class="upload-area" id="uploadArea" tabindex="0" role="button" aria-label="Upload STEM document">
+                    <div class="upload-icon">📄</div>
+                    <h2>Upload STEM Document</h2>
+                    <p>Drop an image or click to browse</p>
+                    <p class="supported-formats">Supports: JPG, PNG, PDF screenshots</p>
+                    <input type="file" id="fileInput" accept="image/*,.pdf" style="display: none;">
+                </div>
+                
+                <!-- Demo Mode Toggle -->
+                <div class="demo-controls">
+                    <label class="demo-toggle">
+                        <input type="checkbox" id="demoMode" checked>
+                        <span class="slider"></span>
+                        Demo Mode (No API keys needed)
+                    </label>
+                </div>
+            </div>
+
+            <div class="processing-section" id="processingSection" style="display: none;">
+                <div class="processing-indicator">
+                    <div class="spinner"></div>
+                    <h3>Processing your document...</h3>
+                    <p id="processingStatus">Analyzing mathematical content</p>
+                </div>
+            </div>
+
+            <div class="results-section" id="resultsSection" style="display: none;">
+                <div class="audio-controls">
+                    <h3>Audio Narration</h3>
+                    <div class="voice-controls">
+                        <button id="playBtn" class="btn btn-primary" aria-label="Play narration">
+                            <span class="btn-icon">▶️</span>
+                            Play Narration
+                        </button>
+                        <button id="pauseBtn" class="btn btn-secondary" aria-label="Pause narration" style="display: none;">
+                            <span class="btn-icon">⏸️</span>
+                            Pause
+                        </button>
+                        <button id="stopBtn" class="btn btn-secondary" aria-label="Stop narration">
+                            <span class="btn-icon">⏹️</span>
+                            Stop
+                        </button>
+                    </div>
+                    <div class="voice-selection">
+                        <label for="voiceSelect">Narration Voice:</label>
+                        <select id="voiceSelect" class="voice-select">
+                            <option value="standard">Standard Voice (Main Content)</option>
+                            <option value="technical">Technical Voice (Math & Science)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="content-display">
+                    <h3>Processed Content</h3>
+                    <div id="contentOutput" class="content-text"></div>
+                </div>
+
+                <div class="actions">
+                    <button id="newDocumentBtn" class="btn btn-outline">Process New Document</button>
+                    <button id="downloadAudioBtn" class="btn btn-outline">Download Audio</button>
+                </div>
+            </div>
+
+            <!-- Sample Math Problems for Testing -->
+            <div class="sample-problems" id="sampleProblems">
+                <h3>Try These Sample Problems</h3>
+                <div class="sample-grid">
+                    <div class="sample-item" data-problem="quadratic">
+                        <div class="sample-math">x² + 2x + 1 = 0</div>
+                        <div class="sample-desc">Quadratic Equation</div>
+                    </div>
+                    <div class="sample-item" data-problem="calculus">
+                        <div class="sample-math">∫₀^∞ e^(-x) dx</div>
+                        <div class="sample-desc">Calculus Integral</div>
+                    </div>
+                    <div class="sample-item" data-problem="trigonometry">
+                        <div class="sample-math">sin²(x) + cos²(x) = 1</div>
+                        <div class="sample-desc">Trigonometric Identity</div>
+                    </div>
+                    <div class="sample-item" data-problem="statistics">
+                        <div class="sample-math">∑(x - μ)² / n</div>
+                        <div class="sample-desc">Statistical Formula</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>Built for accessibility in STEM education</p>
+        </footer>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="utils/latex-parser.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
