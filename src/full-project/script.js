@@ -176,9 +176,9 @@ async function processWithMathpix(base64Image) {
 
 // 🗣️ Generate speech text
 function generateSpeechText(mathpixResult) {
-    if (DEMO_MODE) {
-        return DEMO_CONTENT.text;
-    }
+    // if (DEMO_MODE) {
+    //     return DEMO_CONTENT.text;
+    // }
     
     // Extract text content
     const text = mathpixResult.text || '';
@@ -196,10 +196,10 @@ function generateSpeechText(mathpixResult) {
 
 // 🎵 Create math audio
 async function createMathAudio(text, voiceType) {
-    if (DEMO_MODE) {
-        console.log('🎭 Demo mode - generating sample audio');
-        return createDemoAudioBlob();
-    }
+    // if (DEMO_MODE) {
+    //     console.log('🎭 Demo mode - generating sample audio');
+    //     return createDemoAudioBlob();
+    // }
     
     try {
         validateElevenLabsConfig();
@@ -211,9 +211,9 @@ async function createMathAudio(text, voiceType) {
 }
 
 // 🎭 Create demo audio blob
-function createDemoAudioBlob() {
-    return new Blob(['demo audio'], { type: 'audio/wav' });
-}
+// function createDemoAudioBlob() {
+//     return new Blob(['demo audio'], { type: 'audio/wav' });
+// }
 
 // 📱 UI Functions
 function showProcessingSection() {
@@ -262,10 +262,10 @@ function resetApplication() {
 
 // 🔍 Check API connection
 async function checkAPIConnection() {
-    if (DEMO_MODE) {
-        console.log('🎭 Running in demo mode - APIs not required');
-        return;
-    }
+    // if (DEMO_MODE) {
+    //     console.log('🎭 Running in demo mode - APIs not required');
+    //     return;
+    // }
     
     try {
         // Check Mathpix connection
