@@ -1,0 +1,14 @@
+.DS_Store
+node_modules/
+.env
+*.log
+*.tmp
+.idea/
+.vscode/
+dist/
+build/
+coverage/
+*.swp
+*.bak
+notes.md
+.env
