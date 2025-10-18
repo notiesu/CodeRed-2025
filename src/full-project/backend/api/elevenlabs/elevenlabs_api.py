@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, send_file
+from flask import Flask, request, jsonify, send_file, Blueprint
 from dotenv import load_dotenv
 from elevenlabs.client import ElevenLabs
 from elevenlabs import save
@@ -7,23 +7,20 @@ import os
 # Load environment variables
 load_dotenv()
 
-# Initialize Flask app
-app = Flask(__name__)
+elevenlabs_bp = Blueprint('elevenlabs', __name__)
 
-# Initialize ElevenLabs client
 elevenlabs = ElevenLabs(
   api_key=os.getenv("ELEVENLABS_API_KEY"),
 )
 
-@app.route('/text-to-speech', methods=['POST'])
-def text_to_speech():
+def text_to_speech(text, voice_id="JBFqnCBsd6RMkjVDRZzb", model_id="eleven_multilingual_v2", output_format="mp3_44100_128"):
   try:
-    # Get JSON data from the request
-    data = request.get_json()
-    text = data.get('text', 'Hi')
-    voice_id = data.get('voice_id', 'JBFqnCBsd6RMkjVDRZzb')
-    model_id = data.get('model_id', 'eleven_multilingual_v2')
-    output_format = data.get('output_format', 'mp3_44100_128')
+    # # Get JSON data from the request
+    # data = request.get_json()
+    # text = data.get('text', 'Hi')
+    # voice_id = data.get('voice_id', 'JBFqnCBsd6RMkjVDRZzb')
+    # model_id = data.get('model_id', 'eleven_multilingual_v2')
+    # output_format = data.get('output_format', 'mp3_44100_128')
 
     # Convert text to speech
     audio = elevenlabs.text_to_speech.convert(
@@ -43,6 +40,3 @@ def text_to_speech():
   except Exception as e:
     return jsonify({"error": str(e)}), 500
 
-# Run the Flask app
-if __name__ == '__main__':
-  app.run(debug=True)
