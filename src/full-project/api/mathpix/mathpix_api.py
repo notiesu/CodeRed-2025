@@ -29,6 +29,10 @@ def process_image():
         file = request.files['image']
         if file.filename == '':
             return jsonify({"error": "No file selected"}), 400
+        
+        # Check if file is an image
+        if not file.content_type.startswith('image/'):
+            return jsonify({"error": "File must be an image"}), 400
             
         # Read the image file
         image_data = file.read()
@@ -42,7 +46,7 @@ def process_image():
         }
         
         payload = {
-            'src': f'data:image/jpeg;base64,{base64_image}',
+            'src': f'data:{file.content_type};base64,{base64_image}',
             'formats': ['text', 'latex_styled', 'mathml'],
             'include_latex': True,
             'include_mathml': True
@@ -51,82 +55,34 @@ def process_image():
         response = requests.post(MATHPIX_API_ENDPOINT, headers=headers, json=payload)
         
         if response.status_code != 200:
-            return jsonify({"error": f"Mathpix API error: {response.status_code}"}), response.status_code
-            
-        return jsonify(response.json())
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
-if __name__ == '__main__':
-    app.run(debug=True)
-        # Check if file is present in request
-        if 'file' not in request.files:
-            return jsonify({'error': 'No file provided'}), 400
-        
-        file = request.files['file']
-        
-        # Check if file is empty
-        if file.filename == '':
-            return jsonify({'error': 'No file selected'}), 400
-        
-        # Check if file is an image
-        if not file.content_type.startswith('image/'):
-            return jsonify({'error': 'File must be an image'}), 400
-        
-        # Read and encode the image
-        file_content = file.read()
-        base64_image = base64.b64encode(file_content).decode('utf-8')
-        
-        # Prepare request to Mathpix API
-        headers = {
-            'app_id': MATHPIX_APP_ID,
-            'app_key': MATHPIX_APP_KEY,
-            'Content-Type': 'application/json'
-        }
-        
-        payload = {
-            'src': f'data:{file.content_type};base64,{base64_image}',
-            'formats': ['text', 'latex_styled'],
-            'include_latex': True,
-            'include_mathml': True
-        }
-        
-        # Make request to Mathpix API
-        response = requests.post(MATHPIX_API_ENDPOINT, headers=headers, json=payload)
-        
-        # Check if request was successful
-        if response.status_code == 200:
-            result = response.json()
             return jsonify({
-                'success': True,
-                'text': result.get('text', ''),
-                'latex': result.get('latex_styled', ''),
-                'mathml': result.get('mathml', ''),
-                'confidence': result.get('confidence', 0)
-            })
-        else:
-            return jsonify({
-                'success': False,
-                'error': f'Mathpix API error: {response.status_code}'
+                "success": False,
+                "error": f"Mathpix API error: {response.status_code}"
             }), response.status_code
             
+        result = response.json()
+        return jsonify({
+            "success": True,
+            "text": result.get('text', ''),
+            "latex": result.get('latex_styled', ''),
+            "mathml": result.get('mathml', ''),
+            "confidence": result.get('confidence', 0)
+        })
     except Exception as e:
         return jsonify({
-            'success': False,
-            'error': str(e)
+            "success": False,
+            "error": str(e)
         }), 500
 
 @app.route('/test-connection', methods=['GET'])
 def test_connection():
     try:
-        # Basic connection test
         if not MATHPIX_APP_ID or not MATHPIX_APP_KEY:
             return jsonify({
                 'success': False,
                 'error': 'Mathpix API credentials not configured'
             }), 401
             
-        # Send a minimal request to test API connection
         headers = {
             'app_id': MATHPIX_APP_ID,
             'app_key': MATHPIX_APP_KEY
