@@ -2,15 +2,6 @@
 // Replace these with your actual API keys when you get them
 import { MATHPIX_APP_ID, MATHPIX_APP_KEY, ELEVENLABS_API_KEY, GEMINI_API_KEY} from './secrets.js';
 
-// 🎯 Demo Mode (for testing without API keys)
-const DEMO_MODE = false; // Set to true for testing without API keys
-
-// 📝 Demo Content (used when DEMO_MODE is true)
-const DEMO_CONTENT = {
-    text: "This is a sample math problem: x squared plus 2x plus 1 equals zero. The solution is x equals negative 1.",
-    latex: "x^2 + 2x + 1 = 0 \\Rightarrow x = -1"
-};
-
 // 🎵 Voice Settings
 const VOICE_SETTINGS = {
     standard: {

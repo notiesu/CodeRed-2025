@@ -160,10 +160,10 @@ function handleAudioDownload() {
 
 // 📊 Process with Mathpix API
 async function processWithMathpix(base64Image) {
-    if (DEMO_MODE) {
-        console.log('🎭 Using demo mode - no real API call');
-        return DEMO_CONTENT;
-    }
+    // if (DEMO_MODE) {
+    //     console.log('🎭 Using demo mode - no real API call');
+    //     return DEMO_CONTENT;
+    // }
     
     try {
         validateMathpixConfig();
