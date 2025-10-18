@@ -47,17 +47,22 @@ def image_to_speech():
     #overall input - pdf/image file
     #overall output - audio file
     mathpix_output = process_image(headers, payload)
-    print(mathpix_output)
+    print(f'mathpix_output: {mathpix_output}')
 
     #input - text
     #input - text
-    math_content = mathpix_output.get_json().get("content", "")
+    math_content = mathpix_output.get_json().get("text", "")
     gemini_output = generate_content(math_content)
 
     #extract speech
     speech_content = gemini_output.get_json().get("response", "")
-    elevenlabs_output = process(speech_content)
-    return elevenlabs_output
+    elevenlabs_output = text_to_speech(speech_content)
+
+    #return audio file, speech_content (transcript)
+    return {
+        "transcript": speech_content,
+        "audio": elevenlabs_output
+    }
 
 if __name__ == '__main__':
     app.run(debug=True)
