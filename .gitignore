@@ -12,3 +12,4 @@ coverage/
 *.bak
 notes.md
 .env
+secrets.js

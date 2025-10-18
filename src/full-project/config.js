@@ -1,9 +1,6 @@
 // 🔑 API Configuration
 // Replace these with your actual API keys when you get them
-
-const MATHPIX_APP_ID = 'your_mathpix_app_id_here';
-const MATHPIX_APP_KEY = 'your_mathpix_app_key_here';
-const ELEVENLABS_API_KEY = 'your_elevenlabs_api_key_here';
+import { MATHPIX_APP_ID, MATHPIX_APP_KEY, ELEVENLABS_API_KEY, GEMINI_API_KEY} from './secrets.js';
 
 // 🎯 Demo Mode (for testing without API keys)
 const DEMO_MODE = false; // Set to true for testing without API keys
