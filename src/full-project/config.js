@@ -52,18 +52,16 @@ const ERROR_MESSAGES = {
     processingTimeout: 'Processing took too long. Please try again.'
 };
 
-// Export for use in other files
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = {
-        MATHPIX_APP_ID,
-        MATHPIX_APP_KEY,
-        ELEVENLABS_API_KEY,
-        DEMO_MODE,
-        DEMO_CONTENT,
-        VOICE_SETTINGS,
-        API_ENDPOINTS,
-        APP_SETTINGS,
-        UI_CONFIG,
-        ERROR_MESSAGES
-    };
-}
+// Export for use in other files (ES module syntax)
+export {
+    MATHPIX_APP_ID,
+    MATHPIX_APP_KEY,
+    ELEVENLABS_API_KEY,
+    DEMO_MODE,
+    DEMO_CONTENT,
+    VOICE_SETTINGS,
+    API_ENDPOINTS,
+    APP_SETTINGS,
+    UI_CONFIG,
+    ERROR_MESSAGES
+};

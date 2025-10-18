@@ -239,19 +239,17 @@ function downloadFile(blob, filename) {
     URL.revokeObjectURL(url);
 }
 
-// Export functions for use in other files
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = {
-        fileToBase64,
-        validateFile,
-        getFileInfo,
-        formatFileSize,
-        createFilePreview,
-        compressImage,
-        setupDragAndDrop,
-        createFileInput,
-        triggerFileInput,
-        processMultipleFiles,
-        downloadFile
-    };
-}
+// Export functions for use in other files (ES module syntax)
+export {
+    fileToBase64,
+    validateFile,
+    getFileInfo,
+    formatFileSize,
+    createFilePreview,
+    compressImage,
+    setupDragAndDrop,
+    createFileInput,
+    triggerFileInput,
+    processMultipleFiles,
+    downloadFile
+};

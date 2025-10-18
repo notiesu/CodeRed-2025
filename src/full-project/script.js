@@ -1,3 +1,16 @@
+import {
+    fileToBase64,
+    validateFile,
+    getFileInfo,
+    formatFileSize,
+    createFilePreview,
+    compressImage,
+    setupDragAndDrop,
+    createFileInput,
+    triggerFileInput,
+    processMultipleFiles,
+    downloadFile
+} from './utils/file-handler.js';
 // 🎯 MathsVoice - Full Application
 // This file coordinates all components and handles the main application logic
 
@@ -90,6 +103,8 @@ async function handleFileSelect(file) {
         const base64 = await fileToBase64(file);
         const mathpixResult = await processWithMathpix(base64);
         
+        console.log(mathpixResult.text);
+        console.log(mathpixResult.latex);
         // Convert to speech
         const speechText = generateSpeechText(mathpixResult);
         
