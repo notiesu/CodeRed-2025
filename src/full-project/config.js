@@ -1,6 +1,6 @@
 // 🔑 API Configuration
 // Replace these with your actual API keys when you get them
-import { MATHPIX_APP_ID, MATHPIX_APP_KEY, ELEVENLABS_API_KEY, GEMINI_API_KEY} from './secrets.js';
+import { MATHPIX_APP_ID, MATHPIX_APP_KEY, ELEVENLABS_API_KEY } from './secrets.js';
 
 // 🎵 Voice Settings
 const VOICE_SETTINGS = {

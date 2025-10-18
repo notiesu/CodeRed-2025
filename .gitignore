@@ -13,3 +13,4 @@ coverage/
 notes.md
 .env
 secrets.js
+/test_inputs

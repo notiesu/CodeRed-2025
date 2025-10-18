@@ -179,7 +179,6 @@ async function processWithMathpix(base64Image) {
     //     console.log('🎭 Using demo mode - no real API call');
     //     return DEMO_CONTENT;
     // }
-    
     try {
         validateMathpixConfig();
         return await processWithMathpix(base64Image);

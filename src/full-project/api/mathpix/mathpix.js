@@ -7,6 +7,8 @@
  * @param {Object} options - Processing options
  * @returns {Promise<Object>} - Mathpix API response
  */
+
+import { MATHPIX_APP_ID, MATHPIX_APP_KEY, API_ENDPOINTS } from '../../config.js';
 async function processWithMathpix(base64Image, options = {}) {
     const defaultOptions = {
         formats: ['text', 'latex_styled', 'mathml'],
