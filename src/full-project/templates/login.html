@@ -31,6 +31,17 @@
             <p class="subtitle">Login to your account</p>
         </header>
         <main class="main-content auth-card">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                <div class="flash-messages" style="margin-bottom: 18px;">
+                  {% for category, message in messages %}
+                    <div class="flash flash-{{ category }}" style="background: #ffe5e5; color: #b00020; border-radius: 8px; padding: 12px 18px; margin-bottom: 8px; font-size: 15px; font-family: 'Inter', sans-serif; font-weight: 500; box-shadow: 0 2px 8px rgba(0,0,0,0.07);">
+                      {{ message }}
+                    </div>
+                  {% endfor %}
+                </div>
+              {% endif %}
+            {% endwith %}
             <form class="form" id="loginForm" method="POST" action="{{ url_for('login') }}" novalidate>
                 <div class="form-group">
                     <label for="identifier">Email or Username</label>
