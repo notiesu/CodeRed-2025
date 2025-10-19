@@ -1,4 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+src/full-project/.venv/
+
+# IDE/OS
+.vscode/
+.idea/
+*.iml
 .DS_Store
+Thumbs.db
+
+# Build/dist
+build/
+dist/
+
+# Local data and instances
+instance/
+src/full-project/instance/
+*.db
+*.sqlite3
+
+# Temp files
+.tmp/
+src/full-project/.tmp/
+*.log
+
+# Node (if any future frontend tooling)
+node_modules/.DS_Store
 node_modules/
 .env
 *.log

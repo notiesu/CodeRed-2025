@@ -17,6 +17,7 @@
             </div>
             <div class="navbar-links" style="display: flex; gap: 18px;">
                 {% if current_user.is_authenticated %}
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-secondary" style="min-width: 110px;">Dashboard</a>
                     <form action="{{ url_for('logout') }}" method="post" style="display: inline;">
                         <button type="submit" class="btn btn-outline" style="min-width: 90px; background: white; color: #667eea; border: none;">Logout</button>
                     </form>

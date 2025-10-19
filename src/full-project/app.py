@@ -8,8 +8,8 @@ from backend.api.gemini.gemini_api import gemini_bp, generate_summary, list_equa
 import base64
 import os
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.orm import DeclarativeBase
-from sqlalchemy import Integer, String, Text
+from sqlalchemy.orm import DeclarativeBase, relationship
+from sqlalchemy import Integer, String, Text, DateTime, ForeignKey
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, login_user, logout_user, UserMixin, current_user, login_required
 from dataclasses import dataclass
@@ -79,6 +79,20 @@ class User(UserMixin, db.Model):
     username = db.Column(String, unique=True, nullable=False)
     email = db.Column(String, unique=True, nullable=False)
     password = db.Column(String, nullable=False)
+    # Relationship: one User -> many Documents
+    documents = relationship('Document', back_populates='user', cascade='all, delete-orphan')
+
+
+class Document(db.Model):
+    id = db.Column(Integer, primary_key=True)
+    user_id = db.Column(Integer, ForeignKey('user.id'), nullable=False)
+    filename = db.Column(String, nullable=False)
+    upload_time = db.Column(DateTime, default=db.func.now())
+    original_text = db.Column(Text)  # Raw Mathpix text
+    transcript = db.Column(Text)     # Final narrated text (Gemini summary)
+    voice_id = db.Column(String)     # Selected voice used for narration
+
+    user = relationship('User', back_populates='documents')
 
 
 with app.app_context():
@@ -214,6 +228,23 @@ def image_to_speech():
     else:
         audio_base64 = None
 
+    # Persist document for logged-in users
+    try:
+        if current_user.is_authenticated:
+            safe_filename = file.filename or 'uploaded_document'
+            doc = Document(
+                user_id=current_user.id,
+                filename=safe_filename,
+                original_text=math_content,
+                transcript=speech_content,
+                voice_id=voice_id
+            )
+            db.session.add(doc)
+            db.session.commit()
+    except Exception as e:
+        # Don't block response if saving fails; log in server console
+        print(f"Failed to save document: {e}")
+
     #return audio file (base64) and speech_content (transcript)
     return jsonify({
         "transcript": speech_content,
@@ -233,6 +264,16 @@ def home():
 @app.route('/app')
 def index():
     return render_template("index.html")
+
+
+@app.route('/dashboard')
+@login_required
+def dashboard():
+    # Order newest first
+    user_docs = db.session.execute(
+        db.select(Document).where(Document.user_id == current_user.id).order_by(Document.upload_time.desc())
+    ).scalars().all()
+    return render_template('dashboard.html', documents=user_docs)
 
 if __name__ == '__main__':
     app.run(debug=True)

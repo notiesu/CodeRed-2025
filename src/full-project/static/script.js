@@ -122,7 +122,7 @@ async function handleFileSelect(file) {
         
     // Process file with backend (Mathpix -> Gemini -> ElevenLabs)
     // The backend accepts a multipart/form-data POST at /image-to-speech
-        const voiceSelect = document.getElementById('voiceSelect');
+        let voiceSelect = document.getElementById('voiceSelect');
         if (!voiceSelect) {
             console.warn('Voice select not found yet, retrying...');
             await new Promise(r => setTimeout(r, 100)); // tiny delay
@@ -280,6 +280,10 @@ function showResults(speechText) {
     // Show video toggle button
     const videoBtn = document.getElementById('toggleVideoBtn');
     if (videoBtn) videoBtn.style.display = 'inline-block';
+
+    // Show 'View in Dashboard' if present
+    const dashLink = document.getElementById('viewDashboardLink');
+    if (dashLink) dashLink.style.display = 'inline-flex';
 }
 
 function showError(message) {

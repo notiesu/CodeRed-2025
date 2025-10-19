@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - MathsVoice</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar" style="display: flex; justify-content: space-between; align-items: center; padding: 20px 30px; background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); border-radius: 15px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
+            <div class="navbar-brand" style="display: flex; align-items: center;">
+                <a href="{{ url_for('home') }}" style="text-decoration: none; color: white; font-size: 2rem; font-weight: 700;">
+                    <span style="font-weight: 700;">MathsVoice</span>
+                </a>
+            </div>
+            <div class="navbar-links" style="display: flex; gap: 12px; align-items:center;">
+                <a href="{{ url_for('index') }}" class="btn btn-outline" style="min-width: 90px; background: white; color: #667eea; border: none;">App</a>
+                <a href="{{ url_for('dashboard') }}" class="btn btn-primary" aria-current="page" style="min-width: 110px;">Dashboard</a>
+                <form action="{{ url_for('logout') }}" method="post" style="display: inline;">
+                    <button type="submit" class="btn btn-outline" style="min-width: 90px; background: white; color: #667eea; border: none;">Logout</button>
+                </form>
+            </div>
+        </nav>
+
+        <header class="header">
+            <h1 class="title">Your Documents</h1>
+            <p class="subtitle">Recently processed files and transcripts</p>
+        </header>
+
+        <main class="main-content">
+            {% if documents and documents|length > 0 %}
+                <div role="list" aria-label="Processed documents" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px;">
+                    {% for d in documents %}
+                    <article role="listitem" class="doc-card" style="background:#f8f9ff; border:1px solid #e1e5ff; border-radius:12px; padding:16px; display:flex; flex-direction:column; gap:10px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <h3 style="margin:0; font-size:1.05rem; color:#333; max-width:70%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="{{ d.filename }}">{{ d.filename }}</h3>
+                            <span style="font-size:0.85rem; color:#666;">{{ d.upload_time.strftime('%Y-%m-%d %H:%M') if d.upload_time else '' }}</span>
+                        </div>
+                        <div style="font-size:0.95rem; color:#555; max-height:120px; overflow:auto; background:white; border-radius:8px; padding:10px; border:1px solid #e1e5ff;" aria-label="Transcript preview">
+                            {{ (d.transcript or d.original_text or '')[:300] }}{% if (d.transcript or d.original_text) and (d.transcript or d.original_text)|length > 300 %}...{% endif %}
+                        </div>
+                        <div style="display:flex; gap:10px; margin-top:auto;">
+                            <a class="btn btn-secondary" href="{{ url_for('index') }}">Open in App</a>
+                            {% if d.transcript %}
+                            <button class="btn btn-outline" onclick="(function(txt){const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);})(this.dataset.t);" data-t="{{ (d.transcript or '')|replace('"','&quot;')|replace('\n',' ') }}" aria-label="Copy transcript">Copy</button>
+                            {% endif %}
+                        </div>
+                    </article>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state" style="text-align:center; padding:30px;">
+                    <p>You have no documents yet.</p>
+                    <a href="{{ url_for('index') }}" class="btn btn-primary" style="margin-top:10px;">Process a Document</a>
+                </div>
+            {% endif %}
+        </main>
+
+        <footer class="footer">
+            <p>Built for accessibility in STEM education</p>
+        </footer>
+    </div>
+</body>
+</html>

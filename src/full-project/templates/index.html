@@ -21,6 +21,7 @@
             </div>
             <div class="navbar-links" style="display: flex; gap: 18px;">
                 {% if current_user.is_authenticated %}
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-secondary" style="min-width: 110px;">Dashboard</a>
                     <form action="{{ url_for('logout') }}" method="post" style="display: inline;">
                         <button type="submit" class="btn btn-outline" style="min-width: 90px; background: white; color: #667eea; border: none;">Logout</button>
                     </form>
@@ -61,6 +62,9 @@
                 <div class="actions">
                     <button id="newDocumentBtn" class="btn btn-outline" aria-label="Process a new document">Process New Document</button>
                     <button id="toggleVideoBtn" class="btn btn-primary" style="display:none; margin-left:12px;" aria-label="Toggle video window">Subway Surfers</button>
+                    {% if current_user.is_authenticated %}
+                    <a id="viewDashboardLink" class="btn btn-secondary" href="{{ url_for('dashboard') }}" style="display:none;" aria-label="View this in your dashboard">View in Dashboard</a>
+                    {% endif %}
                 </div>
             </div>
         </main>
