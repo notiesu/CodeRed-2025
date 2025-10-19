@@ -15,7 +15,7 @@ from flask_login import LoginManager, login_user, logout_user, UserMixin, curren
 from dataclasses import dataclass
 
 
-app = Flask(__name__, static_folder="static")
+app = Flask(__name__)
 
 # #create database
 # class Base(DeclarativeBase):
