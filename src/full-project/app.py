@@ -9,7 +9,7 @@ from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy import Integer, String, Text
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, login_user, logout_user, UserMixin, current_user, login_required
-
+from dataclasses import dataclass
 
 
 app = Flask(__name__)
@@ -31,6 +31,26 @@ app = Flask(__name__)
 
 # with app.app_context():
 #     db.create_all()
+
+@dataclass
+class SupportedVoice:
+  id: str
+  name: str
+  language: str
+
+
+SUPPORTED_VOICES = [
+    SupportedVoice(id="7EgG6hUPTRSnBBfZN5tp", name="English Male", language="english"),
+    SupportedVoice(id="67oeJmj7jIMsdE6yXPr5", name="English Female", language="english"),
+    SupportedVoice(id="zl1Ut8dvwcVSuQSB9XkG", name="Spanish Female", language="spanish"),
+    SupportedVoice(id="IdhxxSTaAg80CTeSgScm", name="Spanish Male", language="spanish"),
+    SupportedVoice(id="DwVjO5Gf5OLta9foButZ", name="Filipino Male", language="tagalog"),
+    SupportedVoice(id="X8p5qX4nY3p7b2F6mLzD", name="Filipino Female", language="tagalog"),
+    SupportedVoice(id="nutrBX1pApRaSpLJobvb", name="Indian Female", language="hindi"),
+    SupportedVoice(id="tCQZxDMvByfdDO1hNxhz", name="Indian Male", language="hindi"),
+    SupportedVoice(id="t8BrjWUT5Z23DLLBzbuY", name="French Female", language="french"),
+    SupportedVoice(id="5d9jEFwkzN2grNaI7bw1", name="French Male", language="french")
+]
 
 
 # Register blueprints
@@ -134,6 +154,11 @@ def image_to_speech():
         return jsonify({"error": "No file provided"}), 400
     
     file = request.files['image']
+    if 'voice_id' in request.form:
+        voice_id = request.form['voice_id']
+    else:
+        return jsonify({"error": "No voice ID provided"}), 400
+    voiceObject = next((voice for voice in SUPPORTED_VOICES if voice.id == voice_id), None)
     if file.filename == '':
         return jsonify({"error": "No file selected"}), 400
         
@@ -162,15 +187,23 @@ def image_to_speech():
     #input - text
     #input - text
     math_content = mathpix_output.get_json().get("text", "")
-    gemini_output = generate_summary(math_content)
+    gemini_output = generate_summary(math_content, language=voiceObject.language)
     #TODO - consider performance before uncommenting
     # list_equations_output = list_equations(math_content)
     list_equations_output = jsonify({"equations": []})
 
     #extract speech
     speech_content = gemini_output.get_json().get("response", "")
-    elevenlabs_output = text_to_speech(speech_content)
+    elevenlabs_output = text_to_speech(text=speech_content, voice_id=voice_id)
 
+    # try:
+    #     return jsonify(elevenlabs_output.get_json())
+    # except:
+    #     return jsonify({"error": type(elevenlabs_output), "details": str(elevenlabs_output)})
+
+    # # Now safe to check for errors
+    # if "error" in response_json:
+    #     return response_json
     # Read the generated audio file and encode as base64
     audio_path = ".tmp/output.wav"
     if os.path.exists(audio_path):
@@ -187,6 +220,10 @@ def image_to_speech():
         "equations": list_equations_output.get_json().get("equations", [])
     })
 
+@app.route('/voices', methods=['GET'])
+def supported_voices():
+    return jsonify({"voices": [vars(voice) for voice in SUPPORTED_VOICES]})
+
 @app.route('/')
 def home():
     return render_template('home.html')
@@ -197,3 +234,5 @@ def index():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+application=app

@@ -46,6 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeComponents();
     setupEventListeners();
     checkAPIConnection();
+    fetchAndPopulateVoices();
 });
 
 // 🔧 Initialize all components
@@ -120,10 +121,18 @@ async function handleFileSelect(file) {
         
     // Process file with backend (Mathpix -> Gemini -> ElevenLabs)
     // The backend accepts a multipart/form-data POST at /image-to-speech
-        const mathpixResult = await processPDF(file);
+        const voiceSelect = document.getElementById('voiceSelect');
+        if (!voiceSelect) {
+            console.warn('Voice select not found yet, retrying...');
+            await new Promise(r => setTimeout(r, 100)); // tiny delay
+            voiceSelect = document.getElementById('voiceSelect');
+        }
+        const selectedVoice = voiceSelect ? voiceSelect.value : null;
+        const mathpixResult = await processPDF(file, selectedVoice);
         
         console.log(mathpixResult.text);
         console.log(mathpixResult.audio);
+        console.log(selectedVoice);
         // Convert to speech
         // const speechText = generateSpeechText(mathpixResult);
         
@@ -145,6 +154,29 @@ async function handleFileSelect(file) {
         processingIndicator.showError(error.message);
     } finally {
         isProcessing = false;
+    }
+}
+
+// Fetch voices from backend and populate the voice select dropdown
+async function fetchAndPopulateVoices() {
+    try {
+        const resp = await fetch('/voices');
+        if (!resp.ok) return;
+        const j = await resp.json();
+        const voices = j.voices || [];
+        const select = document.getElementById('voiceSelect');
+        if (!select) return;
+        select.innerHTML = '';
+        voices.forEach(v => {
+            const opt = document.createElement('option');
+            opt.value = v.id;
+            opt.textContent = `${v.name} (${v.language})`;
+            select.appendChild(opt);
+        });
+        // Optionally select a default voice
+        if (voices.length > 0) select.value = voices[0].id;
+    } catch (err) {
+        console.error('Failed to fetch voices:', err);
     }
 }
 

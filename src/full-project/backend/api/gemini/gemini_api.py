@@ -21,11 +21,13 @@ class Equation:
         self.symbols.update(new_symbols)
 
 GENERATE_SUMMARY_PROMPT = (
-    "You are an expert STEM educator. Convert technical lecture notes into a clear, engaging script "
+    "You are an expert STEM educator. Convert technical lecture notes into a clear, engaging script."
+    "This script will be directly spoken to the user, so avoid filler language and go straight into the content."
     "suitable for audio. Explain complex concepts in simple, conversational language without losing accuracy. "
     "Emphasize key points, formulas, and definitions. Include brief examples or analogies. "
     "Keep sentences concise and natural for reading aloud. Maintain logical flow and break long sections "
     "into digestible segments. Avoid filler or unnecessary repetition."
+    "Ensure the summary is less than 240 words AT MAXIMUM."
     "This is the lecture content:\n"
 )
 
@@ -37,16 +39,23 @@ LIST_EQUATIONS_PROMPT = (
     "LaTeX equation - Description - MathML representation\n"
     "Symbols: symbol1, symbol2, ..."
     "Ensure accuracy and completeness in extraction."
+    "Only do this for up to 10 equations."
     "This is the lecture content:\n"
 )
 
-def generate_summary(content):
+
+def generate_summary(content, language="en"):
 
     # content = request.args.get('content', default='', type=str)
     if not content:
         return jsonify({"error": "Content parameter is required"}), 400
     
-    full_prompt = f"{GENERATE_SUMMARY_PROMPT}\n\n{content}"
+    # Optionally include voice guidance in the system prompt
+    voice_hint = ''
+    if language:
+        voice_hint = f"\n\nFirst, translate content into this language: {language}."
+
+    full_prompt = f"{voice_hint}/{GENERATE_SUMMARY_PROMPT}\n\n{content}"
     # Replace 'your_api_key_here' with your actual API key
     client = genai.Client()
     response = client.models.generate_content(
