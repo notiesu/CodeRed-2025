@@ -44,7 +44,7 @@ async function processPDF(fileOrBase64) {
                     }
                     const byteArray = new Uint8Array(byteNumbers);
                     const blob = new Blob([byteArray], { type: `audio/${j.audio_format || 'wav'}` });
-                    return { text: j.transcript || '', latex: j.latex || '', audio: blob };
+                    return { text: j.transcript || '', latex: j.latex || '', audio: blob , equations: j.equations || []};
                 }
 
                 console.log('Warning: No audio returned from backend JSON.');
@@ -55,7 +55,7 @@ async function processPDF(fileOrBase64) {
             const blob = await resp.blob();
             // Some backends may include a transcript in a header; try to parse it if present
             const transcriptHeader = resp.headers.get('x-transcript') || '';
-            return { text: transcriptHeader, latex: '', audio: blob };
+            return { text: transcriptHeader, latex: '', audio: blob};
         }
 
         // Fallback: if caller passed a base64 string, call Mathpix directly (not used when backend present)
