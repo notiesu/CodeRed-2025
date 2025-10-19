@@ -112,6 +112,7 @@ function setupAudioManagerListeners() {
 }
 
 // 📁 Handle file selection
+
 async function handleFileSelect(file) {
     if (isProcessing) return;
     
@@ -130,9 +131,9 @@ async function handleFileSelect(file) {
         const selectedVoice = voiceSelect ? voiceSelect.value : null;
         const mathpixResult = await processPDF(file, selectedVoice);
         
-        console.log(mathpixResult.text);
-        console.log(mathpixResult.audio);
-        console.log(selectedVoice);
+        // console.log(mathpixResult.text);
+        // console.log(mathpixResult.audio);
+        // console.log(selectedVoice);
         // Convert to speech
         // const speechText = generateSpeechText(mathpixResult);
         
