@@ -1,7 +1,7 @@
-from flask import Flask, request, jsonify
-from api.mathpix.mathpix_api import mathpix_bp, process_image
-from api.elevenlabs.elevenlabs_api import elevenlabs_bp, text_to_speech
-from api.gemini.gemini_api import gemini_bp, generate_content
+from flask import Flask, request, jsonify, render_template
+from backend.api.mathpix.mathpix_api import mathpix_bp, process_image
+from backend.api.elevenlabs.elevenlabs_api import elevenlabs_bp, text_to_speech
+from backend.api.gemini.gemini_api import gemini_bp, generate_content
 import base64
 import os
 
@@ -73,6 +73,10 @@ def image_to_speech():
         "audio_base64": audio_base64,
         "audio_format": "wav"
     })
+
+@app.route('/')
+def index():
+    return render_template('index.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

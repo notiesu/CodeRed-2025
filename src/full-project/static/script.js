@@ -116,17 +116,22 @@ async function handleFileSelect(file) {
         isProcessing = true;
         showProcessingSection();
         
-        // Process file with Mathpix
-        const base64 = await fileToBase64(file);
-        const mathpixResult = await processWithMathpix(base64);
+    // Process file with backend (Mathpix -> Gemini -> ElevenLabs)
+    // The backend accepts a multipart/form-data POST at /image-to-speech
+    const mathpixResult = await processWithMathpix(file);
         
         console.log(mathpixResult.text);
         console.log(mathpixResult.latex);
         // Convert to speech
         const speechText = generateSpeechText(mathpixResult);
         
-        // Generate audio with ElevenLabs
-        const audioBlob = await createMathAudio(speechText, 'standard');
+        // Use audio from backend if available, otherwise request ElevenLabs audio
+        let audioBlob = null;
+        if (mathpixResult && mathpixResult.audio instanceof Blob) {
+            audioBlob = mathpixResult.audio;
+        } else {
+            audioBlob = await createMathAudio(speechText, 'standard');
+        }
         
         // Load audio and show results
         await audioManager.loadAudio(audioBlob);
@@ -211,22 +216,6 @@ function generateSpeechText(mathpixResult) {
     
     // Combine text and math
     return `${enhancedText} ${spokenMath}`.trim();
-}
-
-// 🎵 Create math audio
-async function createMathAudio(text, voiceType) {
-    // if (DEMO_MODE) {
-    //     console.log('🎭 Demo mode - generating sample audio');
-    //     return createDemoAudioBlob();
-    // }
-    
-    try {
-        validateElevenLabsConfig();
-        return await createMathAudio(text, voiceType);
-    } catch (error) {
-        console.error('ElevenLabs processing error:', error);
-        throw new Error(`Failed to generate audio: ${error.message}`);
-    }
 }
 
 // 🎭 Create demo audio blob

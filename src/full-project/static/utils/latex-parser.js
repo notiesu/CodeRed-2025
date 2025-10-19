@@ -6,7 +6,7 @@
  * @param {string} latex - LaTeX expression
  * @returns {string} - Spoken text
  */
-function convertLatexToSpeech(latex) {
+export function convertLatexToSpeech(latex) {
     if (!latex) return '';
     
     let speech = latex;
@@ -116,7 +116,7 @@ function convertLatexToSpeech(latex) {
  * @param {string} text - Input text
  * @returns {string} - Enhanced text
  */
-function enhanceTextForSpeech(text) {
+export function enhanceTextForSpeech(text) {
     if (!text) return '';
     
     let enhanced = text;
@@ -143,7 +143,7 @@ function enhanceTextForSpeech(text) {
  * @param {string} type - Content type
  * @returns {string} - Speech text
  */
-function generateSpeechText(content, type = 'mixed') {
+export function generateSpeechText(content, type = 'mixed') {
     let speechText = '';
     
     if (type === 'demo') {
@@ -174,7 +174,7 @@ function generateSpeechText(content, type = 'mixed') {
  * @param {string} type - Problem type
  * @returns {Object} - Sample problem
  */
-function getSampleProblem(type) {
+export function getSampleProblem(type) {
     const SAMPLE_PROBLEMS = {
         quadratic: {
             latex: "x^2 + 2x + 1 = 0",
@@ -223,7 +223,7 @@ function validateLatex(latex) {
  * @param {string} text - Input text
  * @returns {Array} - Array of mathematical expressions
  */
-function extractMathExpressions(text) {
+export function extractMathExpressions(text) {
     const mathPatterns = [
         /\$([^$]+)\$/g, // Inline math
         /\$\$([^$]+)\$\$/g, // Display math

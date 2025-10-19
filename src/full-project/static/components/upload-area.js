@@ -260,7 +260,7 @@ class UploadArea {
  * @param {Object} options - Component options
  * @returns {UploadArea} - Upload area instance
  */
-function createUploadArea(container, options = {}) {
+export function createUploadArea(container, options = {}) {
     return new UploadArea(container, options);
 }
 

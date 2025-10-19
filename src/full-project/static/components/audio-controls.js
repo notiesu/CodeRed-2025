@@ -369,7 +369,7 @@ class AudioControls {
  * @param {Object} options - Component options
  * @returns {AudioControls} - Audio controls instance
  */
-function createAudioControls(container, options = {}) {
+export function createAudioControls(container, options = {}) {
     return new AudioControls(container, options);
 }
 

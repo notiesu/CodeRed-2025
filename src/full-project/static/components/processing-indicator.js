@@ -233,7 +233,7 @@ class ProcessingIndicator {
  * @param {Object} options - Component options
  * @returns {ProcessingIndicator} - Processing indicator instance
  */
-function createProcessingIndicator(container, options = {}) {
+export function createProcessingIndicator(container, options = {}) {
     return new ProcessingIndicator(container, options);
 }
 

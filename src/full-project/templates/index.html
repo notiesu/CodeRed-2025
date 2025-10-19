@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MathsVoice - Accessible STEM Learning</title>
-    <link rel="stylesheet" href="styles.css">
+    <!-- CSS from static folder -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <meta name="description" content="Making STEM education accessible through AI-powered voice narration">
     <meta name="keywords" content="accessibility, STEM, education, math, science, voice, narration, visual impairment">
@@ -49,21 +50,21 @@
     </div>
 
     <!-- Load configuration and utilities -->
-    <script src="config.js"></script>
-    <script src="utils/latex-parser.js"></script>
-    <script src="utils/file-handler.js"></script>
-    <script src="utils/audio-manager.js"></script>
+    <script src="{{ url_for('static', filename='config.js') }}"></script>
+    <script src="{{ url_for('static', filename='utils/latex-parser.js') }}"></script>
+    <script src="{{ url_for('static', filename='utils/file-handler.js') }}"></script>
+    <script src="{{ url_for('static', filename='utils/audio-manager.js') }}"></script>
     
     <!-- Load API modules -->
-    <script type="module" src="api/mathpix/mathpix.js"></script>
-    <script type="module" src="api/elevenlabs/elevenlabs.js"></script>
+    <script type="module" src="{{ url_for('static', filename='api/mathpix/mathpix.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='api/elevenlabs/elevenlabs.js') }}"></script>
 
     <!-- Load components -->
-    <script type="module" src="components/upload-area.js"></script>
-    <script type="module" src="components/processing-indicator.js"></script>
-    <script type="module" src="components/audio-controls.js"></script>
+    <script type="module" src="{{ url_for('static', filename='components/upload-area.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='components/processing-indicator.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='components/audio-controls.js') }}"></script>
 
     <!-- Load main application -->
-    <script type="module" src="script.js"></script>
+    <script type="module" src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>

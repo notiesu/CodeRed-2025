@@ -232,7 +232,7 @@ class AudioManager {
  * Create audio manager instance
  * @returns {AudioManager} - Audio manager instance
  */
-function createAudioManager() {
+export function createAudioManager() {
     return new AudioManager();
 }
 

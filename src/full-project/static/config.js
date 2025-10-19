@@ -1,6 +1,3 @@
-// 🔑 API Configuration
-// Replace these with your actual API keys when you get them
-import { MATHPIX_APP_ID, MATHPIX_APP_KEY, ELEVENLABS_API_KEY } from './secrets.js';
 
 // 🎵 Voice Settings
 const VOICE_SETTINGS = {
@@ -14,12 +11,6 @@ const VOICE_SETTINGS = {
         name: "Technical Voice",
         description: "Precise, technical voice for mathematical expressions"
     }
-};
-
-// 🌐 API Endpoints
-const API_ENDPOINTS = {
-    mathpix: 'https://api.mathpix.com/v3/text',
-    elevenlabs: 'https://api.elevenlabs.io/v1/text-to-speech'
 };
 
 // ⚙️ Application Settings
@@ -54,11 +45,7 @@ const ERROR_MESSAGES = {
 
 // Export for use in other files (ES module syntax)
 export {
-    MATHPIX_APP_ID,
-    MATHPIX_APP_KEY,
-    ELEVENLABS_API_KEY,
     VOICE_SETTINGS,
-    API_ENDPOINTS,
     APP_SETTINGS,
     UI_CONFIG,
     ERROR_MESSAGES
