@@ -15,7 +15,7 @@ from flask_login import LoginManager, login_user, logout_user, UserMixin, curren
 from dataclasses import dataclass
 
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
 
 # #create database
 # class Base(DeclarativeBase):
@@ -144,6 +144,7 @@ def login():
 
 
 @app.route("/logout", methods=["POST"])
+@login_required
 def logout():
     logout_user()
     return redirect(url_for('home'))
@@ -207,7 +208,7 @@ def image_to_speech():
     # if "error" in response_json:
     #     return response_json
     # Read the generated audio file and encode as base64
-    audio_path = ".tmp/output.wav"
+    audio_path = os.path.join(os.path.dirname(__file__), ".tmp/output.wav")
     if os.path.exists(audio_path):
         with open(audio_path, 'rb') as audio_file:
             audio_base64 = base64.b64encode(audio_file.read()).decode('utf-8')
