@@ -212,6 +212,8 @@ def image_to_speech():
 
     #extract speech
     speech_content = gemini_output.get_json().get("response", "")
+    #make the path if doesnt exist
+    os.makedirs(os.path.dirname(audio_path), exist_ok=True)
     audio_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".tmp/output.wav")
     elevenlabs_output = text_to_speech(text=speech_content, voice_id=voice_id, audio_path=audio_path)
 
