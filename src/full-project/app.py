@@ -14,22 +14,23 @@ from flask_login import LoginManager, login_user, logout_user, UserMixin, curren
 
 app = Flask(__name__)
 
-#create database
-class Base(DeclarativeBase):
-    pass
+# #create database
+# class Base(DeclarativeBase):
+#     pass
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
-db = SQLAlchemy(model_class=Base)
-db.init_app(app)
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(app.instance_path, 'users.db')
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-class User(db.Model):
-    id = db.Column(Integer, primary_key=True)
-    username = db.Column(String, unique=True, nullable=False)
-    email = db.Column(String, unique=True, nullable=False)
-    password = db.Column(String, unique=True, nullable=False)
+# db = SQLAlchemy(app)
 
-with app.app_context():
-    db.create_all()
+# class User(db.Model):
+#     id = db.Column(Integer, primary_key=True)
+#     username = db.Column(String, unique=True, nullable=False)
+#     email = db.Column(String, unique=True, nullable=False)
+#     password = db.Column(String, unique=True, nullable=False)
+
+# with app.app_context():
+#     db.create_all()
 
 
 # Register blueprints
