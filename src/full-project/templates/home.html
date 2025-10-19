@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - MathsVoice</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar" style="display: flex; justify-content: space-between; align-items: center; padding: 20px 30px; background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); border-radius: 15px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
+            <div class="navbar-brand" style="display: flex; align-items: center;">
+                <a href="{{ url_for('home') }}" style="text-decoration: none; color: white; font-size: 2rem; font-weight: 700;">
+                    <span style="font-weight: 700;">MathsVoice</span>
+                </a>
+            </div>
+            <div class="navbar-links" style="display: flex; gap: 18px;">
+                {% if current_user.is_authenticated %}
+                    <form action="{{ url_for('logout') }}" method="post" style="display: inline;">
+                        <button type="submit" class="btn btn-outline" style="min-width: 90px; background: white; color: #667eea; border: none;">Logout</button>
+                    </form>
+                {% else %}
+                    <a href="{{ url_for('login') }}" class="btn btn-outline" style="min-width: 90px; background: white; color: #667eea; border: none;">Login</a>
+                    <a href="{{ url_for('register') }}" class="btn btn-primary" style="min-width: 90px;">Register</a>
+                {% endif %}
+            </div>
+        </nav>
+        <header class="header">
+            <h1 class="title">MathsVoice</h1>
+            <p class="subtitle">Empowering Accessible STEM Learning</p>
+        </header>
+        <main class="main-content" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+            <section class="intro-section" style="text-align: center; max-width: 600px;">
+                <h2>Welcome to MathsVoice</h2>
+                <p>MathsVoice is designed to make STEM education accessible for everyone, including people with learning disabilities and visual impairments. Our AI-powered platform converts math and science content into clear, narrated audio, making learning inclusive and engaging.</p>
+            </section>
+            <section class="about-section" style="margin-top: 40px; max-width: 600px; text-align: center;">
+                <h2>About MathsVoice</h2>
+                <p style="font-size: 1rem; color: #555; margin-bottom: 18px;">
+                    MathsVoice uses advanced AI to convert math and science documents into spoken word, helping students with dyslexia, ADHD, visual impairments, and other learning differences. Our platform supports multiple formats, offers customizable narration, and is built with accessibility in mind.
+                </p>
+                <ul style="text-align: left; display: inline-block; margin: 0 auto 24px auto; font-size: 0.95rem; color: #555;">
+                    <li>Audio narration for math and science content</li>
+                    <li>Accessible design for screen readers and keyboard navigation</li>
+                    <li>Customizable voices and playback speed</li>
+                    <li>Easy document upload and processing</li>
+                </ul>
+                <div style="display: flex; justify-content: center;">
+                    {% if current_user.is_authenticated %}
+                        <a href="{{ url_for('index') }}" class="btn btn-primary" style="margin-top: 0;">Try Now</a>
+                    {% else %}
+                        <a href="{{ url_for('login') }}" class="btn btn-primary" style="margin-top: 0;">Try Now</a>
+                    {% endif %}
+                </div>
+            </section>
+        </main>
+        <footer class="footer">
+            <p>Built for accessibility in STEM education</p>
+        </footer>
+    </div>
+</body>
+</html>

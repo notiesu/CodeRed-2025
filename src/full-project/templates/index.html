@@ -13,6 +13,23 @@
 </head>
 <body>
     <div class="container">
+        <nav class="navbar" style="display: flex; justify-content: space-between; align-items: center; padding: 20px 30px; background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); border-radius: 15px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
+            <div class="navbar-brand" style="display: flex; align-items: center;">
+                <a href="{{ url_for('index') }}" style="text-decoration: none; color: white; font-size: 2rem; font-weight: 700;">
+                    <span style="font-weight: 700;">MathsVoice</span>
+                </a>
+            </div>
+            <div class="navbar-links" style="display: flex; gap: 18px;">
+                {% if current_user.is_authenticated %}
+                    <form action="{{ url_for('logout') }}" method="post" style="display: inline;">
+                        <button type="submit" class="btn btn-outline" style="min-width: 90px; background: white; color: #667eea; border: none;">Logout</button>
+                    </form>
+                {% else %}
+                    <a href="{{ url_for('login') }}" class="btn btn-outline" style="min-width: 90px; background: white; color: #667eea; border: none;">Login</a>
+                    <a href="{{ url_for('register') }}" class="btn btn-primary" style="min-width: 90px;">Register</a>
+                {% endif %}
+            </div>
+        </nav>
         <header class="header">
             <h1 class="title">MathsVoice</h1>
             <p class="subtitle">Making STEM accessible through AI-powered voice narration</p>
