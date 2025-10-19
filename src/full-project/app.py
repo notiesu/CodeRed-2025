@@ -4,8 +4,29 @@ from backend.api.elevenlabs.elevenlabs_api import elevenlabs_bp, text_to_speech
 from backend.api.gemini.gemini_api import gemini_bp, generate_summary, list_equations
 import base64
 import os
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.orm import DeclarativeBase
+from sqlalchemy import Integer, String, Text
 
 app = Flask(__name__)
+
+#create database
+class Base(DeclarativeBase):
+    pass
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+db = SQLAlchemy(model_class=Base)
+db.init_app(app)
+
+class User(db.Model):
+    id = db.Column(Integer, primary_key=True)
+    username = db.Column(String, unique=True, nullable=False)
+    email = db.Column(String, unique=True, nullable=False)
+    password = db.Column(String, unique=True, nullable=False)
+
+with app.app_context():
+    db.create_all()
+
 
 # Register blueprints
 app.register_blueprint(mathpix_bp)
@@ -15,11 +36,15 @@ app.register_blueprint(gemini_bp)
 MATHPIX_APP_ID = os.getenv('MATHPIX_APP_ID')
 MATHPIX_APP_KEY = os.getenv('MATHPIX_APP_KEY')
 
+#create database
+class Base(DeclarativeBase):
+    pass
+
+engine = create_engine("sqlite:///example.db")
 
 @app.route('/image-to-speech', methods=['POST'])
 def image_to_speech():
     # Check if file was uploaded
-    print(request.files)
     if 'image' not in request.files:
         return jsonify({"error": "No file provided"}), 400
     
