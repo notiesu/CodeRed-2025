@@ -1,0 +1,1 @@
+web: gunicorn src.full-project.app:app
