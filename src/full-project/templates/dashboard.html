@@ -16,10 +16,10 @@
                 </a>
             </div>
             <div class="navbar-links" style="display: flex; gap: 12px; align-items:center;">
-                <a href="{{ url_for('index') }}" class="btn btn-outline" style="min-width: 90px; background: white; color: #667eea; border: none;">App</a>
-                <a href="{{ url_for('dashboard') }}" class="btn btn-primary" aria-current="page" style="min-width: 110px;">Dashboard</a>
+                <a href="{{ url_for('index') }}" class="btn btn-primary" style="min-width: 90px;">App</a>
+                <a href="{{ url_for('dashboard') }}" class="btn btn-secondary" aria-current="page" style="min-width: 110px;">Dashboard</a>
                 <form action="{{ url_for('logout') }}" method="post" style="display: inline;">
-                    <button type="submit" class="btn btn-outline" style="min-width: 90px; background: white; color: #667eea; border: none;">Logout</button>
+                    <button type="submit" class="btn btn-outline" aria-label="Logout" style="min-width: 90px; background: white; color: #667eea; border: none;">Logout</button>
                 </form>
             </div>
         </nav>
