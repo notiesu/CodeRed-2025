@@ -275,6 +275,10 @@ function showResults(speechText) {
     
     // Enable audio controls
     audioControls.setEnabled(true);
+    
+    // Show video toggle button
+    const videoBtn = document.getElementById('toggleVideoBtn');
+    if (videoBtn) videoBtn.style.display = 'inline-block';
 }
 
 function showError(message) {
@@ -292,6 +296,15 @@ function resetApplication() {
     document.getElementById('uploadContainer').style.display = 'block';
     document.getElementById('processingSection').style.display = 'none';
     document.getElementById('resultsSection').style.display = 'none';
+    
+    // Hide video button and close video window
+    const videoBtn = document.getElementById('toggleVideoBtn');
+    if (videoBtn) {
+        videoBtn.style.display = 'none';
+        videoBtn.textContent = 'Watch Video';
+    }
+    const videoWindow = document.getElementById('videoWindow');
+    if (videoWindow) videoWindow.style.display = 'none';
     
     // Reset components
     uploadArea.reset();
