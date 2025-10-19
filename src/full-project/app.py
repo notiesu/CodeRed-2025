@@ -1,3 +1,6 @@
+import os, sys
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
 from flask import Flask, request, jsonify, render_template, flash, redirect, url_for
 from backend.api.mathpix.mathpix_api import mathpix_bp, process_image
 from backend.api.elevenlabs.elevenlabs_api import elevenlabs_bp, text_to_speech
