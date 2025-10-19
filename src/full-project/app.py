@@ -158,7 +158,6 @@ def image_to_speech():
     #overall input - pdf/image file
     #overall output - audio file
     mathpix_output = process_image(headers, payload)
-    print(f'mathpix_output: {mathpix_output}')
 
     #input - text
     #input - text
