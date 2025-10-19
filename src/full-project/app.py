@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, render_template
 from backend.api.mathpix.mathpix_api import mathpix_bp, process_image
 from backend.api.elevenlabs.elevenlabs_api import elevenlabs_bp, text_to_speech
-from backend.api.gemini.gemini_api import gemini_bp, generate_content
+from backend.api.gemini.gemini_api import gemini_bp, generate_summary, list_equations
 import base64
 import os
 
@@ -53,7 +53,10 @@ def image_to_speech():
     #input - text
     #input - text
     math_content = mathpix_output.get_json().get("text", "")
-    gemini_output = generate_content(math_content)
+    gemini_output = generate_summary(math_content)
+    #TODO - consider performance before uncommenting
+    # list_equations_output = list_equations(math_content)
+    list_equations_output = jsonify({"equations": []})
 
     #extract speech
     speech_content = gemini_output.get_json().get("response", "")
@@ -71,7 +74,8 @@ def image_to_speech():
     return jsonify({
         "transcript": speech_content,
         "audio_base64": audio_base64,
-        "audio_format": "wav"
+        "audio_format": "wav",
+        "equations": list_equations_output.get_json().get("equations", [])
     })
 
 @app.route('/')
