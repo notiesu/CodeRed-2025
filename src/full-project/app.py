@@ -8,6 +8,8 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy import Integer, String, Text
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import LoginManager, login_user, logout_user, UserMixin, current_user, login_required
+
 
 
 app = Flask(__name__)
@@ -20,6 +22,7 @@ app.register_blueprint(gemini_bp)
 MATHPIX_APP_ID = os.getenv('MATHPIX_APP_ID')
 MATHPIX_APP_KEY = os.getenv('MATHPIX_APP_KEY')
 
+app.secret_key = os.getenv("LOGIN_SECRET_KEY")
 #create database
 class Base(DeclarativeBase):
     pass
@@ -29,7 +32,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 db = SQLAlchemy(model_class=Base)
 db.init_app(app)
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     id = db.Column(Integer, primary_key=True)
     username = db.Column(String, unique=True, nullable=False)
     email = db.Column(String, unique=True, nullable=False)
@@ -38,6 +41,15 @@ class User(db.Model):
 
 with app.app_context():
     db.create_all()
+
+
+#user authentication
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+@login_manager.user_loader
+def load_user(user_id):
+    return db.get_or_404(User, user_id)
 
 
 #register endpoint
@@ -65,13 +77,35 @@ def register():
         new_user = User(username=username, email=email, password=hashed_password)
         db.session.add(new_user)
         db.session.commit()
-        return render_template("index.html")
+        login_user(new_user)
+        return redirect(url_for("index"))
     return render_template("register.html")
 
 @app.route("/login", methods=["GET","POST"])
 def login():
-    
+    if request.method == "POST":
+        identifier = request.form.get("identifier")
+        password = request.form.get("password")
+        # Try username first, then email
+        user = db.session.execute(db.select(User).where(User.username == identifier)).scalar()
+        if not user:
+            user = db.session.execute(db.select(User).where(User.email == identifier)).scalar()
+        if not user:
+            flash("Wrong username or email")
+            return redirect(url_for('login'))
+        if not check_password_hash(user.password, password):
+            flash("Wrong password")
+            return redirect(url_for('login'))
+        login_user(user)
+        return redirect(url_for("index"))
     return render_template("login.html")
+
+
+@app.route("/logout", methods=["POST"])
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('home'))
 
 
 @app.route('/image-to-speech', methods=['POST'])
@@ -132,6 +166,10 @@ def image_to_speech():
     })
 
 @app.route('/')
+def home():
+    return render_template('home.html')
+
+@app.route('/app')
 def index():
     return render_template("index.html")
 
