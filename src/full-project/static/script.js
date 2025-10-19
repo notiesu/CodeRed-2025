@@ -12,22 +12,24 @@ import {
     downloadFile
 } from './utils/file-handler.js';
 import {
-    processWithMathpix,
+    processPDF,
     processMathpixResponse,
     validateMathpixConfig,
     testMathpixConnection,
     getMathpixUsage
-} from './api/mathpix/mathpix.js';
+} from './api/api.js';
 import { createUploadArea } from './components/upload-area.js';
 import { createProcessingIndicator } from './components/processing-indicator.js';
 import { createAudioControls } from './components/audio-controls.js';
 import { createAudioManager } from './utils/audio-manager.js';
-import { convertLatexToSpeech } from './utils/latex-parser.js';
 import {
-    validateElevenLabsConfig,
-    createMathAudio,
-    testElevenLabsConnection
-} from './api/elevenlabs/elevenlabs.js';
+    convertLatexToSpeech,
+    enhanceTextForSpeech,
+    generateSpeechTextFromContent,
+    getSampleProblem,
+    validateLatex,
+    extractMathExpressions
+} from './utils/latex-parser.js';
 // 🎯 MathsVoice - Full Application
 // This file coordinates all components and handles the main application logic
 
@@ -118,24 +120,25 @@ async function handleFileSelect(file) {
         
     // Process file with backend (Mathpix -> Gemini -> ElevenLabs)
     // The backend accepts a multipart/form-data POST at /image-to-speech
-    const mathpixResult = await processWithMathpix(file);
+        const mathpixResult = await processPDF(file);
         
         console.log(mathpixResult.text);
-        console.log(mathpixResult.latex);
+        console.log(mathpixResult.audio);
         // Convert to speech
-        const speechText = generateSpeechText(mathpixResult);
+        // const speechText = generateSpeechText(mathpixResult);
         
-        // Use audio from backend if available, otherwise request ElevenLabs audio
+        // Expect backend to return audio from the pipeline (Mathpix->Gemini->ElevenLabs)
         let audioBlob = null;
+        let transcript = mathpixResult.text || '';
         if (mathpixResult && mathpixResult.audio instanceof Blob) {
             audioBlob = mathpixResult.audio;
         } else {
-            audioBlob = await createMathAudio(speechText, 'standard');
+            throw new Error('No audio returned from backend. Ensure the server pipeline (Mathpix->Gemini->ElevenLabs) is running.');
         }
         
         // Load audio and show results
         await audioManager.loadAudio(audioBlob);
-        showResults(speechText);
+        showResults(transcript);
         
     } catch (error) {
         console.error('Processing error:', error);
@@ -275,23 +278,23 @@ async function checkAPIConnection() {
     //     return;
     // }
     
-    try {
-        // Check Mathpix connection
-        const mathpixConnected = await testMathpixConnection();
-        console.log(`Mathpix connection: ${mathpixConnected ? '✅' : '❌'}`);
+    // try {
+    //     // Check Mathpix connection
+    //     const mathpixConnected = await testMathpixConnection();
+    //     console.log(`Mathpix connection: ${mathpixConnected ? '✅' : '❌'}`);
         
-        // Check ElevenLabs connection
-        const elevenlabsConnected = await testElevenLabsConnection();
-        console.log(`ElevenLabs connection: ${elevenlabsConnected ? '✅' : '❌'}`);
+    //     // Check ElevenLabs connection
+    //     const elevenlabsConnected = await testElevenLabsConnection();
+    //     console.log(`ElevenLabs connection: ${elevenlabsConnected ? '✅' : '❌'}`);
         
-        if (!mathpixConnected || !elevenlabsConnected) {
-            showError('API connection failed. Please check your configuration.');
-        }
+    //     if (!mathpixConnected || !elevenlabsConnected) {
+    //         showError('API connection failed. Please check your configuration.');
+    //     }
         
-    } catch (error) {
-        console.error('API connection check failed:', error);
-        showError('Failed to verify API connections. Please check your configuration.');
-    }
+    // } catch (error) {
+    //     console.error('API connection check failed:', error);
+    //     showError('Failed to verify API connections. Please check your configuration.');
+    // }
 }
 
 // 🛠️ Utility Functions
