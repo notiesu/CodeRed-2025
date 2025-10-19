@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, send_file, Blueprint
+from flask import jsonify, send_file, Blueprint
 from dotenv import load_dotenv
 from elevenlabs import ElevenLabs
 from elevenlabs import save
@@ -32,6 +32,7 @@ def text_to_speech(text, voice_id="JBFqnCBsd6RMkjVDRZzb", model_id="eleven_multi
 
     # Save the audio file
     output_path = ".tmp/output.wav"
+
     save(audio, output_path)
 
     # Return the audio file as a response
@@ -39,4 +40,6 @@ def text_to_speech(text, voice_id="JBFqnCBsd6RMkjVDRZzb", model_id="eleven_multi
 
   except Exception as e:
     return jsonify({"error": str(e)}), 500
+
+
 

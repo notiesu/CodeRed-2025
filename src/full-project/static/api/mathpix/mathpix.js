@@ -9,15 +9,15 @@
 // set BASE_BACKEND_URL to 'http://localhost:5000' (or your backend URL).
 const BASE_BACKEND_URL = '';
 
-async function processPDF(fileOrBase64, voiceId = null) {
+async function processPDF(fileOrBase64) {
     // If passed a File object, send it to the Flask backend which runs the
     // full pipeline: Mathpix -> Gemini -> ElevenLabs and returns transcript + audio
     try {
         if (fileOrBase64 instanceof File) {
             const form = new FormData();
             form.append('image', fileOrBase64);
-            // If voiceId is provided, include it in the form data
             if (voiceId) form.append('voice_id', voiceId);
+async function processWithMathpix(fileOrBase64, voiceId = null) {
 
             const url = (BASE_BACKEND_URL || '') + '/image-to-speech';
             const resp = await fetch(url, {
@@ -46,7 +46,7 @@ async function processPDF(fileOrBase64, voiceId = null) {
                     }
                     const byteArray = new Uint8Array(byteNumbers);
                     const blob = new Blob([byteArray], { type: `audio/${j.audio_format || 'wav'}` });
-                    return { text: j.transcript || '', latex: j.latex || '', audio: blob , equations: j.equations || []};
+                    return { text: j.transcript || '', latex: j.latex || '', audio: blob };
                 }
 
                 console.log('Warning: No audio returned from backend JSON.');
@@ -57,7 +57,7 @@ async function processPDF(fileOrBase64, voiceId = null) {
             const blob = await resp.blob();
             // Some backends may include a transcript in a header; try to parse it if present
             const transcriptHeader = resp.headers.get('x-transcript') || '';
-            return { text: transcriptHeader, latex: '', audio: blob};
+            return { text: transcriptHeader, latex: '', audio: blob };
         }
 
         // Fallback: if caller passed a base64 string, call Mathpix directly (not used when backend present)

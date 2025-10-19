@@ -83,6 +83,22 @@
     <script type="module" src="{{ url_for('static', filename='components/processing-indicator.js') }}"></script>
     <script type="module" src="{{ url_for('static', filename='components/audio-controls.js') }}"></script>
 
+    <!-- Voice selector -->
+    <script>
+    // Insert a voice select near the upload area once DOM is ready
+    document.addEventListener('DOMContentLoaded', () => {
+        const uploadSection = document.querySelector('.upload-section');
+        if (!uploadSection) return;
+        const div = document.createElement('div');
+        div.style.margin = '12px 0';
+        div.innerHTML = `
+            <label for="voiceSelect">Voice:</label>
+            <select id="voiceSelect"><option value="">Loading voices...</option></select>
+        `;
+        uploadSection.insertBefore(div, uploadSection.firstChild);
+    });
+    </script>
+
     <!-- Load main application -->
     <script type="module" src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
