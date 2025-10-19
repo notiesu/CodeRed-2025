@@ -20,26 +20,29 @@
 
         <main class="main-content">
             <!-- Upload Section -->
-            <div class="upload-section">
+            <div class="upload-section" aria-labelledby="uploadSectionHeading">
+                <h2 id="uploadSectionHeading">Upload Your Document</h2>
                 <div id="uploadContainer"></div>
             </div>
 
             <!-- Processing Section -->
-            <div class="processing-section" id="processingSection" style="display: none;">
+            <div class="processing-section" id="processingSection" style="display: none;" aria-labelledby="processingSectionHeading">
+                <h2 id="processingSectionHeading">Processing Your Document</h2>
                 <div id="processingContainer"></div>
             </div>
 
             <!-- Results Section -->
-            <div class="results-section" id="resultsSection" style="display: none;">
+            <div class="results-section" id="resultsSection" style="display: none;" aria-labelledby="resultsSectionHeading">
+                <h2 id="resultsSectionHeading">Results</h2>
                 <div id="audioControlsContainer"></div>
                 
                 <div class="content-display">
                     <h3>Processed Content</h3>
-                    <div id="contentOutput" class="content-text"></div>
+                    <div id="contentOutput" class="content-text" tabindex="0" aria-live="polite"></div>
                 </div>
 
                 <div class="actions">
-                    <button id="newDocumentBtn" class="btn btn-outline">Process New Document</button>
+                    <button id="newDocumentBtn" class="btn btn-outline" aria-label="Process a new document">Process New Document</button>
                 </div>
             </div>
         </main>
@@ -56,8 +59,7 @@
     <script src="{{ url_for('static', filename='utils/audio-manager.js') }}"></script>
     
     <!-- Load API modules -->
-    <script type="module" src="{{ url_for('static', filename='api/mathpix/mathpix.js') }}"></script>
-    <script type="module" src="{{ url_for('static', filename='api/elevenlabs/elevenlabs.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='api/api.js') }}"></script>
 
     <!-- Load components -->
     <script type="module" src="{{ url_for('static', filename='components/upload-area.js') }}"></script>

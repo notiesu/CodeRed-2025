@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - MathsVoice</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="title">MathsVoice</h1>
+            <p class="subtitle">Create your account</p>
+        </header>
+        <main class="main-content auth-card">
+            <form class="form" id="registerForm" method="POST" action="{{ url_for('register') }}" novalidate>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required autocomplete="email">
+                    <span class="error" id="emailError"></span>
+                </div>
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required autocomplete="username">
+                    <span class="error" id="usernameError"></span>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required autocomplete="new-password">
+                    <span class="error" id="passwordError"></span>
+                </div>
+                <button type="submit" class="btn btn-primary">Register</button>
+            </form>
+        </main>
+        <footer class="footer">
+            <p>Built for accessibility in STEM education</p>
+        </footer>
+    </div>
+    <script>
+    // Simple client-side validation
+    document.getElementById('registerForm').addEventListener('submit', function(e) {
+        let valid = true;
+        // Email validation
+        const email = document.getElementById('email');
+        const emailError = document.getElementById('emailError');
+        if (!email.value || !email.value.match(/^\S+@\S+\.\S+$/)) {
+            emailError.textContent = 'Please enter a valid email.';
+            valid = false;
+        } else {
+            emailError.textContent = '';
+        }
+        // Username validation
+        const username = document.getElementById('username');
+        const usernameError = document.getElementById('usernameError');
+        if (!username.value) {
+            usernameError.textContent = 'Username is required.';
+            valid = false;
+        } else {
+            usernameError.textContent = '';
+        }
+        // Password validation
+        const password = document.getElementById('password');
+        const passwordError = document.getElementById('passwordError');
+        if (!password.value || password.value.length < 6) {
+            passwordError.textContent = 'Password must be at least 6 characters.';
+            valid = false;
+        } else {
+            passwordError.textContent = '';
+        }
+        if (!valid) {
+            e.preventDefault();
+        }
+    });
+    </script>
+</body>
+</html>

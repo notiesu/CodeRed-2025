@@ -5,7 +5,11 @@
  * @param {string} base64Image - Base64 image string (no data: prefix)
  * @returns {Promise<Object>} - { text, latex, mathml }
  */
-async function processWithMathpix(fileOrBase64) {
+// If your frontend is served from a different origin than the Flask backend,
+// set BASE_BACKEND_URL to 'http://localhost:5000' (or your backend URL).
+const BASE_BACKEND_URL = '';
+
+async function processPDF(fileOrBase64) {
     // If passed a File object, send it to the Flask backend which runs the
     // full pipeline: Mathpix -> Gemini -> ElevenLabs and returns transcript + audio
     try {
@@ -13,7 +17,8 @@ async function processWithMathpix(fileOrBase64) {
             const form = new FormData();
             form.append('image', fileOrBase64);
 
-            const resp = await fetch('/image-to-speech', {
+            const url = (BASE_BACKEND_URL || '') + '/image-to-speech';
+            const resp = await fetch(url, {
                 method: 'POST',
                 body: form
             });
@@ -29,29 +34,28 @@ async function processWithMathpix(fileOrBase64) {
             const contentType = resp.headers.get('content-type') || '';
             if (contentType.includes('application/json')) {
                 const j = await resp.json();
+                console.log('Mathpix response:', j);
                 // If the backend embedded audio as base64 string, convert it to Blob
-                if (j.audio && typeof j.audio === 'string' && j.audio.startsWith('data:')) {
-                    // data URL -> Blob
-                    const parts = j.audio.split(',');
-                    const meta = parts[0];
-                    const b64 = parts[1];
-                    const byteChars = atob(b64);
+                if (j.audio_base64 && typeof j.audio_base64 === 'string') {
+                    const byteChars = atob(j.audio_base64);
                     const byteNumbers = new Array(byteChars.length);
                     for (let i = 0; i < byteChars.length; i++) {
                         byteNumbers[i] = byteChars.charCodeAt(i);
                     }
                     const byteArray = new Uint8Array(byteNumbers);
-                    const blob = new Blob([byteArray], { type: meta.split(':')[1].split(';')[0] });
+                    const blob = new Blob([byteArray], { type: `audio/${j.audio_format || 'wav'}` });
                     return { text: j.transcript || '', latex: j.latex || '', audio: blob };
                 }
 
+                console.log('Warning: No audio returned from backend JSON.');
                 return { text: j.transcript || '', latex: j.latex || '', audio: null };
             }
 
-            // If backend returned binary (audio file), convert to Blob and try to extract transcript from headers
+            // If backend returned binary (audio file), convert to Blob and try to extract transcript
             const blob = await resp.blob();
-            // Attempt to read a transcript header (custom) or call /test-connection separately
-            return { text: '', latex: '', audio: blob };
+            // Some backends may include a transcript in a header; try to parse it if present
+            const transcriptHeader = resp.headers.get('x-transcript') || '';
+            return { text: transcriptHeader, latex: '', audio: blob };
         }
 
         // Fallback: if caller passed a base64 string, call Mathpix directly (not used when backend present)
@@ -105,7 +109,7 @@ async function getMathpixUsage() {
 }
 
 export {
-    processWithMathpix,
+    processPDF,
     processMathpixResponse,
     validateMathpixConfig,
     testMathpixConnection,

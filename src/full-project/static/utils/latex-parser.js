@@ -143,7 +143,7 @@ export function enhanceTextForSpeech(text) {
  * @param {string} type - Content type
  * @returns {string} - Speech text
  */
-export function generateSpeechText(content, type = 'mixed') {
+export function generateSpeechTextFromContent(content, type = 'mixed') {
     let speechText = '';
     
     if (type === 'demo') {
@@ -205,7 +205,7 @@ export function getSampleProblem(type) {
  * @param {string} latex - LaTeX expression
  * @returns {boolean} - True if valid
  */
-function validateLatex(latex) {
+export function validateLatex(latex) {
     if (!latex) return false;
     
     // Check for common LaTeX syntax errors

@@ -48,6 +48,52 @@ body {
     margin-bottom: 40px;
 }
 
+/* Auth pages: narrower card and centered form */
+.auth-card {
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.auth-card .form {
+    max-width: 420px;
+    margin: 0 auto;
+}
+
+.auth-card .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.auth-card label {
+    text-align: left;
+}
+
+.auth-card input[type="text"],
+.auth-card input[type="email"],
+.auth-card input[type="password"] {
+    padding: 12px 14px;
+    border: 2px solid #e1e5ff;
+    border-radius: 10px;
+    font-size: 1rem;
+}
+
+.auth-card .btn {
+    width: 100%;
+    justify-content: center;
+}
+
+@media (max-width: 600px) {
+    .auth-card {
+        max-width: 100%;
+    }
+    .auth-card .form {
+        max-width: 100%;
+    }
+}
+
 /* Upload section */
 .upload-section {
     margin-bottom: 30px;
@@ -566,4 +612,19 @@ body {
     padding: 15px;
     border-radius: 10px;
     margin: 20px 0;
+}
+
+/* Hide empty validation placeholders */
+.error:empty,
+.success:empty {
+    display: none;
+}
+
+/* Auth pages: inline, subtle field errors */
+.auth-card .error {
+    background: transparent;
+    border: none;
+    padding: 6px 0 0;
+    margin: 0;
+    font-size: 0.9rem;
 }

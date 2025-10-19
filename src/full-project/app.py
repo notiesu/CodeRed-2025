@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, flash, redirect, url_for
 from backend.api.mathpix.mathpix_api import mathpix_bp, process_image
 from backend.api.elevenlabs.elevenlabs_api import elevenlabs_bp, text_to_speech
 from backend.api.gemini.gemini_api import gemini_bp, generate_content
@@ -7,26 +7,10 @@ import os
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy import Integer, String, Text
+from werkzeug.security import generate_password_hash, check_password_hash
+
 
 app = Flask(__name__)
-
-#create database
-class Base(DeclarativeBase):
-    pass
-
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
-db = SQLAlchemy(model_class=Base)
-db.init_app(app)
-
-class User(db.Model):
-    id = db.Column(Integer, primary_key=True)
-    username = db.Column(String, unique=True, nullable=False)
-    email = db.Column(String, unique=True, nullable=False)
-    password = db.Column(String, unique=True, nullable=False)
-
-with app.app_context():
-    db.create_all()
-
 
 # Register blueprints
 app.register_blueprint(mathpix_bp)
@@ -40,7 +24,55 @@ MATHPIX_APP_KEY = os.getenv('MATHPIX_APP_KEY')
 class Base(DeclarativeBase):
     pass
 
-engine = create_engine("sqlite:///example.db")
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+db = SQLAlchemy(model_class=Base)
+db.init_app(app)
+
+class User(db.Model):
+    id = db.Column(Integer, primary_key=True)
+    username = db.Column(String, unique=True, nullable=False)
+    email = db.Column(String, unique=True, nullable=False)
+    password = db.Column(String, nullable=False)
+
+
+with app.app_context():
+    db.create_all()
+
+
+#register endpoint
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    if request.method == "POST":
+        email = request.form.get("email")
+        username = request.form.get("username")
+        password = request.form.get("password")
+        hashed_password = generate_password_hash(password)
+
+        #check for duplicate usernames/ emails
+        user = db.session.execute(db.select(User).where(User.email == email))
+        user = user.scalar()
+        if user:
+            flash("Email is already in use")
+            return redirect(url_for("register"))
+        #check username
+        user = db.session.execute(db.select(User).where(User.username == username))
+        user = user.scalar()
+        if user:
+            flash("Username is already in use")
+            return redirect(url_for("register"))
+                            
+        new_user = User(username=username, email=email, password=hashed_password)
+        db.session.add(new_user)
+        db.session.commit()
+        return render_template("index.html")
+    return render_template("register.html")
+
+@app.route("/login", methods=["GET","POST"])
+def login():
+    
+    return render_template("login.html")
+
 
 @app.route('/image-to-speech', methods=['POST'])
 def image_to_speech():
@@ -101,7 +133,7 @@ def image_to_speech():
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template("index.html")
 
 if __name__ == '__main__':
     app.run(debug=True)
