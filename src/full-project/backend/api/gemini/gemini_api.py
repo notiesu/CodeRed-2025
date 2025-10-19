@@ -21,9 +21,8 @@ class Equation:
         self.symbols.update(new_symbols)
 
 GENERATE_SUMMARY_PROMPT = (
-    "You are an expert STEM educator. Convert technical lecture notes into a clear, engaging script."
-    "This script will be directly spoken to the user, so avoid filler language and go straight into the content."
-    "suitable for audio. Explain complex concepts in simple, conversational language without losing accuracy. "
+    "You are an expert STEM educator. Convert technical lecture notes into a clear, engaging word lecture "
+    "that will be prepped into a text-to-speech. Explain complex concepts in simple, conversational language without losing accuracy. "
     "Emphasize key points, formulas, and definitions. Include brief examples or analogies. "
     "Keep sentences concise and natural for reading aloud. Maintain logical flow and break long sections "
     "into digestible segments. Avoid filler or unnecessary repetition."
