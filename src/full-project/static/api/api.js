@@ -20,7 +20,7 @@ async function processPDF(fileOrBase64, voiceId = null) {
             if (voiceId) form.append('voice_id', voiceId);
 
             const url = (BASE_BACKEND_URL || '') + '/image-to-speech';
-            const resp = await fetch(url, {
+            const resp = await fetch('/image-to-speech', {
                 method: 'POST',
                 body: form
             });
