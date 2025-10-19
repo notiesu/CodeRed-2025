@@ -27,7 +27,7 @@ GENERATE_SUMMARY_PROMPT = (
     "Emphasize key points, formulas, and definitions. Include brief examples or analogies."
     "When describing formulas, use MathML format to ensure clarity."
     "Keep sentences concise and natural for reading aloud. Maintain logical flow and break long sections "
-    "into digestible segments. Avoid filler or unnecessary repetition."
+    "into digestible segments. Avoid filler, unnecessary repetition, and special characters."
     "Ensure the summary is 240 words AT MAXIMUM."
     "This is the lecture content:\n"
 )
