@@ -1,3 +1,6 @@
+import os, sys
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
 from flask import Flask, request, jsonify, render_template, flash, redirect, url_for
 from backend.api.mathpix.mathpix_api import mathpix_bp, process_image
 from backend.api.elevenlabs.elevenlabs_api import elevenlabs_bp, text_to_speech
@@ -12,7 +15,7 @@ from flask_login import LoginManager, login_user, logout_user, UserMixin, curren
 from dataclasses import dataclass
 
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="static")
 
 # #create database
 # class Base(DeclarativeBase):
@@ -141,7 +144,6 @@ def login():
 
 
 @app.route("/logout", methods=["POST"])
-@login_required
 def logout():
     logout_user()
     return redirect(url_for('home'))
