@@ -13,7 +13,7 @@ elevenlabs = ElevenLabs(
   api_key=os.getenv("ELEVENLABS_API_KEY"),
 )
 
-def text_to_speech(text, voice_id="JBFqnCBsd6RMkjVDRZzb", model_id="eleven_multilingual_v2", output_format="wav_44100_128"):
+def text_to_speech(text, voice_id="JBFqnCBsd6RMkjVDRZzb", audio_path="output.wav", model_id="eleven_multilingual_v2", output_format="wav_44100_128"):
   try:
     # # Get JSON data from the request
     # data = request.get_json()
@@ -30,12 +30,7 @@ def text_to_speech(text, voice_id="JBFqnCBsd6RMkjVDRZzb", model_id="eleven_multi
       output_format=output_format,
     )
 
-    # Save the audio file
-    tmp_dir = ".tmp"
-    os.makedirs(tmp_dir, exist_ok=True)
-    output_path = os.path.join(tmp_dir, "output." + output_format.split('_')[0])
-
-    save(audio, output_path)
+    save(audio, audio_path)
 
     # Return the audio file as a response
     return send_file(output_path, as_attachment=True)
