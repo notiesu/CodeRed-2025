@@ -15,7 +15,7 @@ from flask_login import LoginManager, login_user, logout_user, UserMixin, curren
 from dataclasses import dataclass
 
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="static")
 
 # #create database
 # class Base(DeclarativeBase):
@@ -144,7 +144,6 @@ def login():
 
 
 @app.route("/logout", methods=["POST"])
-@login_required
 def logout():
     logout_user()
     return redirect(url_for('home'))
