@@ -223,7 +223,7 @@ def image_to_speech():
     # if "error" in response_json:
     #     return response_json
     # Read the generated audio file and encode as base64
-    audio_path = os.path.join(os.path.dirname(__file__), ".tmp/output.wav")
+    audio_path = ".tmp/output.wav"
     if os.path.exists(audio_path):
         with open(audio_path, 'rb') as audio_file:
             audio_base64 = base64.b64encode(audio_file.read()).decode('utf-8')

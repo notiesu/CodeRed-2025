@@ -31,7 +31,7 @@ def text_to_speech(text, voice_id="JBFqnCBsd6RMkjVDRZzb", model_id="eleven_multi
     )
 
     # Save the audio file
-    tmp_dir = os.path.join(os.path.dirname(__file__), ".tmp")
+    tmp_dir = ".tmp"
     os.makedirs(tmp_dir, exist_ok=True)
     output_path = os.path.join(tmp_dir, "output." + output_format.split('_')[0])
 
